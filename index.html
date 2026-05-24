@@ -92,7 +92,7 @@ body{background:var(--parchment);color:var(--stone);font-family:'DM Sans',sans-s
 .sec-h em{font-style:italic;color:var(--clay)}
 
 /* ====== HELLO ====== */
-.hello-grid{display:grid;grid-template-columns:340px 1fr;gap:5rem;align-items:start}
+.hello-grid{display:grid;grid-template-columns:380px 1fr;gap:4rem;align-items:center}
 .hello-avatar{width:100%;aspect-ratio:3/4;background:var(--mist);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .hello-avatar::before{content:'';position:absolute;inset:0;background:linear-gradient(145deg,rgba(107,127,94,.28),rgba(184,149,106,.14))}
 .av-ring{position:absolute;width:200px;height:200px;border:1px solid rgba(59,79,58,.15);border-radius:50%;animation:slowSpin 30s linear infinite}
@@ -225,86 +225,97 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
 @keyframes wLeaf{to{opacity:1}}
 @keyframes slowSpin{to{transform:rotate(360deg)}}
 
-/* ====== PET COLLAGE HERO ====== */
-.hello-collage-wrap{
-  position:relative;
-  width:100%;
-  min-height:520px;
-  display:flex;align-items:center;justify-content:center;
+/* ====== EDITORIAL PHOTO COLLAGE (Hello section) ====== */
+.ed-collage {
+  position: relative;
+  width: 100%;
+  /* height = main image height + overflow from small cards */
+  padding-bottom: 3rem;
 }
-/* large mossy background oval */
-.hc-oval{
-  position:absolute;
-  width:88%;height:88%;
-  border-radius:50%;
-  background:linear-gradient(135deg,rgba(107,127,94,.18) 0%,rgba(200,211,192,.25) 50%,rgba(184,149,106,.12) 100%);
-  top:50%;left:50%;transform:translate(-50%,-50%);
-  z-index:0;
+ 
+/* ── MAIN IMAGE ── */
+.ed-main {
+  position: relative;
+  width: 78%;
+  max-width: 280px;
+  aspect-ratio: 3/4;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(58,78,57,.2), 0 3px 10px rgba(58,78,57,.1);
 }
-/* faint ring */
-.hc-ring{
-  position:absolute;
-  width:74%;height:74%;
-  border:1px solid rgba(107,127,94,.18);
-  border-radius:50%;
-  top:50%;left:50%;transform:translate(-50%,-50%);
-  animation:slowSpin 35s linear infinite;
-  z-index:0;
+.ed-main img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: transform .7s ease;
 }
-.hc-ring2{
-  position:absolute;
-  width:58%;height:58%;
-  border:1px dashed rgba(184,149,106,.15);
-  border-radius:50%;
-  top:50%;left:50%;transform:translate(-50%,-50%);
-  animation:slowSpin 22s linear infinite reverse;
-  z-index:0;
+.ed-main:hover img { transform: scale(1.04); }
+ 
+/* subtle name label at bottom of main */
+.ed-main-label {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 1rem 1.2rem .8rem;
+  background: linear-gradient(to top, rgba(42,56,41,.65), transparent);
+  font-size: .56rem; letter-spacing: .24em; text-transform: uppercase;
+  color: rgba(247,243,236,.85);
 }
-/* pet photo frames scattered around the oval */
-.hc-img{
-  position:absolute;
-  overflow:hidden;
-  z-index:2;
-  background:var(--sand);
-  transition:transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s;
+ 
+/* ── SHARED SMALL CARD STYLES ── */
+.ed-sm {
+  position: absolute;
+  overflow: hidden;
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(58,78,57,.22), 0 2px 6px rgba(58,78,57,.1);
+  border: 3px solid var(--parchment);
+  background: var(--sand);
+  transition: transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s;
+  z-index: 2;
 }
-.hc-img:hover{transform:var(--hover-t) scale(1.06)!important;box-shadow:0 16px 50px rgba(59,79,58,.16);}
-.hc-img img{width:100%;height:100%;object-fit:cover;display:block;}
-/* placeholder state */
-.hc-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;}
-.hc-ph-ico{font-size:2rem;opacity:.25;}
-.hc-ph-txt{font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(92,82,72,.35);}
-
-/* individual frames — positions & sizes */
-.hc-1{width:52%;aspect-ratio:3/4;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:2px;--hover-t:translate(-50%,-50%);}
-.hc-2{width:30%;aspect-ratio:1;top:4%;left:0%;transform:rotate(-4deg);border-radius:50%;--hover-t:rotate(-4deg);}
-.hc-3{width:26%;aspect-ratio:4/5;top:3%;right:2%;transform:rotate(3deg);border-radius:2px;--hover-t:rotate(3deg);}
-.hc-4{width:26%;aspect-ratio:1;bottom:3%;left:2%;transform:rotate(3deg);border-radius:50%;--hover-t:rotate(3deg);}
-.hc-5{width:28%;aspect-ratio:4/5;bottom:2%;right:1%;transform:rotate(-3deg);border-radius:2px;--hover-t:rotate(-3deg);}
-.hc-6{width:20%;aspect-ratio:1;top:38%;left:-2%;transform:rotate(2deg);border-radius:50%;--hover-t:rotate(2deg);}
-.hc-7{width:20%;aspect-ratio:1;top:36%;right:-1%;transform:rotate(-2deg);border-radius:50%;--hover-t:rotate(-2deg);}
-
-/* caption tag on center image */
-.hc-caption{
-  position:absolute;bottom:0;left:0;right:0;
-  padding:.6rem .9rem;
-  background:linear-gradient(to top,rgba(58,78,57,.55),transparent);
-  font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;
-  color:rgba(247,243,236,.7);text-align:center;
-  z-index:3;
+.ed-sm img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
 }
-/* small label tags near scattered frames */
-.hc-tag{
-  position:absolute;
-  background:var(--parchment);
-  border:1px solid var(--sand);
-  font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--moss);padding:.2rem .6rem;
-  z-index:5;white-space:nowrap;
-  pointer-events:none;
+.ed-sm:hover {
+  box-shadow: 0 14px 38px rgba(58,78,57,.3);
+  z-index: 10;
 }
-.hc-tag-1{bottom:-18px;left:50%;transform:translateX(-50%);}
-.hc-tag-2{bottom:-16px;left:50%;transform:translateX(-50%);}
+ 
+/* ── CAT — overlaps top-right of main image ── */
+.ed-cat {
+  width: 44%;
+  aspect-ratio: 1;
+  top: 8%;
+  right: 2%;
+  transform: rotate(3deg);
+}
+.ed-cat:hover { transform: rotate(3deg) scale(1.05); }
+ 
+/* ── DOG — overlaps bottom-right of main image ── */
+.ed-dog {
+  width: 44%;
+  aspect-ratio: 1;
+  bottom: 0;
+  right: 2%;
+  transform: rotate(-2.5deg);
+}
+.ed-dog:hover { transform: rotate(-2.5deg) scale(1.05); }
+ 
+/* tablet */
+@media (max-width: 1024px) {
+  .ed-main { width: 80%; max-width: 240px; }
+}
+/* mobile */
+@media (max-width: 860px) {
+  .ed-collage { max-width: 320px; margin: 0 auto 2rem; padding-bottom: 4rem; }
+  .ed-main    { width: 72%; max-width: none; }
+  .ed-cat     { width: 42%; right: 0; }
+  .ed-dog     { width: 42%; right: 0; }
+}
+@media (max-width: 480px) {
+  .ed-collage { max-width: 280px; }
+  .ed-main    { width: 70%; }
+  .ed-cat     { width: 44%; }
+  .ed-dog     { width: 44%; }
+}
 
 /* ====== PREMIUM CASE STUDY PROJECTS ====== */
 #s-projects{background:var(--parchment);padding:5.5rem 0;}
