@@ -678,84 +678,49 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
 
 /* ====== PROJECT CAROUSEL ====== */
 
-/* ── base carousel container ── */
+/* ── carousel wrapper ── */
 .proj-carousel {
   position: relative;
   width: 100%;
-  overflow: hidden;
-  background: var(--sand);
+  background: var(--linen);
   user-select: none;
-  /* height is set per-type via modifier classes */
+  overflow: hidden;
 }
 
-/* ── EDITORIAL type: GlowWithin / Meet Fresh / Papa
-   Cover-fit, fixed height, slight crop acceptable ── */
-.proj-carousel.type-editorial {
-  height: 340px;
-}
-.proj-carousel.type-editorial .pc-slide img {
+/* ── slide track ── */
+.pc-track {
+  display: flex;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  display: block;
-  pointer-events: none;
-  image-rendering: -webkit-optimize-contrast;
+  transition: transform .45s cubic-bezier(.22,1,.36,1);
+  will-change: transform;
 }
 
-/* ── ANALYTICS type: Tools / dashboards / charts
-   Contain-fit, taller to preserve readability ── */
-.proj-carousel.type-analytics {
-  height: 400px;
-  background: #f5f5f4; /* near-white, clean lab background */
-}
-.proj-carousel.type-analytics .pc-slide {
+/* ── each slide = framed artwork ── */
+.pc-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  min-height: 420px;
+  max-height: 520px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.2rem 1.5rem;
+  padding: 28px 32px;
+  background: var(--linen);
+  box-sizing: border-box;
 }
-.proj-carousel.type-analytics .pc-slide img {
+
+/* ── the image itself ── */
+.pc-slide img {
   max-width: 100%;
-  max-height: 100%;
+  max-height: 460px;
   width: auto;
   height: auto;
   object-fit: contain;
   display: block;
   pointer-events: none;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-  box-shadow: 0 2px 16px rgba(0,0,0,.08);
-}
-
-/* ── CAMPAIGN type: Wahaha / poster layouts
-   Cover with top-align to preserve compositions ── */
-.proj-carousel.type-campaign {
-  height: 360px;
-}
-.proj-carousel.type-campaign .pc-slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center center;
-  display: block;
-  pointer-events: none;
-  image-rendering: -webkit-optimize-contrast;
-}
-
-/* ── shared slide track ── */
-.pc-track {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  transition: transform .45s cubic-bezier(.22,1,.36,1);
-  will-change: transform;
-}
-.pc-slide {
-  flex: 0 0 100%;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+  image-rendering: auto;
+  /* soft shadow so image floats cleanly on linen bg */
+  box-shadow: 0 4px 24px rgba(58,78,57,.1), 0 1px 4px rgba(58,78,57,.06);
 }
 
 /* ── arrow buttons ── */
@@ -764,8 +729,8 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
   top: 50%;
   transform: translateY(-50%);
   width: 36px; height: 36px;
-  background: rgba(247,243,236,.92);
-  border: 1px solid rgba(223,214,197,.7);
+  background: rgba(247,243,236,.95);
+  border: 1px solid rgba(223,214,197,.8);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer;
@@ -774,11 +739,11 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
   color: var(--forest);
   padding: 0;
   font-size: 0; line-height: 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  box-shadow: 0 2px 8px rgba(0,0,0,.1);
 }
 .pc-btn:hover {
   background: var(--parchment);
-  box-shadow: 0 4px 16px rgba(0,0,0,.16);
+  box-shadow: 0 4px 14px rgba(0,0,0,.14);
 }
 .pc-btn.prev { left: .85rem; }
 .pc-btn.next { right: .85rem; }
@@ -787,7 +752,7 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
 /* ── dot indicators ── */
 .pc-dots {
   position: absolute;
-  bottom: .65rem;
+  bottom: .6rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex; gap: .4rem;
@@ -796,7 +761,7 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
 .pc-dot {
   width: 5px; height: 5px;
   border-radius: 50%;
-  background: rgba(58,78,57,.28);
+  background: rgba(58,78,57,.25);
   cursor: pointer;
   transition: background .25s, transform .25s;
   border: none; padding: 0;
@@ -807,28 +772,32 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
 }
 .proj-carousel[data-count="1"] .pc-dots { display: none; }
 
-/* analytics dots: darker bg for readability */
-.proj-carousel.type-analytics .pc-dot {
-  background: rgba(80,80,80,.25);
+/* ── vis panel: no extra constraints ── */
+.po-vis-panel {
+  position: relative;
+  overflow: hidden;
 }
-.proj-carousel.type-analytics .pc-dot.active {
-  background: var(--forest);
-}
-
-/* ── vis panel: no extra padding ── */
-.po-vis-panel { padding: 0 !important; }
 
 /* ── mobile ── */
 @media (max-width: 860px) {
-  .proj-carousel.type-editorial  { height: 240px; }
-  .proj-carousel.type-analytics  { height: 300px; }
-  .proj-carousel.type-campaign   { height: 260px; }
-  .proj-carousel.type-analytics .pc-slide { padding: .8rem 1rem; }
+  .pc-slide {
+    min-height: 280px;
+    max-height: 380px;
+    padding: 18px 20px;
+  }
+  .pc-slide img {
+    max-height: 320px;
+  }
 }
 @media (max-width: 480px) {
-  .proj-carousel.type-editorial  { height: 200px; }
-  .proj-carousel.type-analytics  { height: 260px; }
-  .proj-carousel.type-campaign   { height: 220px; }
+  .pc-slide {
+    min-height: 220px;
+    max-height: 320px;
+    padding: 14px 16px;
+  }
+  .pc-slide img {
+    max-height: 260px;
+  }
 }
 </style>
 </head>
@@ -1104,7 +1073,7 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
     <div class="po-drawer">
       <div class="po-drawer-inner">
         <div class="po-vis-panel">
-          <div class="proj-carousel type-editorial" data-count="5" id="car-p1">
+          <div class="proj-carousel" data-count="5" id="car-p1">
           <div class="pc-track" id="trk-p1"><div class="pc-slide"><img src="GL.jpg" alt="GlowWithin 1" loading="lazy"></div><div class="pc-slide"><img src="GL2.png" alt="GlowWithin 2" loading="lazy"></div><div class="pc-slide"><img src="GL3.png" alt="GlowWithin 3" loading="lazy"></div><div class="pc-slide"><img src="GL4.png" alt="GlowWithin 4" loading="lazy"></div><div class="pc-slide"><img src="GL5.jpg" alt="GlowWithin 5" loading="lazy"></div></div>
           <button class="pc-btn prev" onclick="carMove('p1',-1)" aria-label="Previous">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
@@ -1146,7 +1115,7 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
     <div class="po-drawer">
       <div class="po-drawer-inner">
         <div class="po-vis-panel">
-          <div class="proj-carousel type-editorial" data-count="2" id="car-p2">
+          <div class="proj-carousel" data-count="2" id="car-p2">
           <div class="pc-track" id="trk-p2"><div class="pc-slide"><img src="MF.png" alt="Meet Fresh 1" loading="lazy"></div><div class="pc-slide"><img src="MF2.png" alt="Meet Fresh 2" loading="lazy"></div></div>
           <button class="pc-btn prev" onclick="carMove('p2',-1)" aria-label="Previous">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
@@ -1188,7 +1157,7 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
     <div class="po-drawer">
       <div class="po-drawer-inner">
         <div class="po-vis-panel">
-          <div class="proj-carousel type-editorial" data-count="2" id="car-p3">
+          <div class="proj-carousel" data-count="2" id="car-p3">
           <div class="pc-track" id="trk-p3"><div class="pc-slide"><img src="Papa.jpg" alt="Papa Kids Fashion Show 1" loading="lazy"></div><div class="pc-slide"><img src="Papa2.png" alt="Papa Kids Fashion Show 2" loading="lazy"></div></div>
           <button class="pc-btn prev" onclick="carMove('p3',-1)" aria-label="Previous">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
@@ -1230,7 +1199,7 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
     <div class="po-drawer">
       <div class="po-drawer-inner">
         <div class="po-vis-panel">
-          <div class="proj-carousel type-analytics" data-count="6" id="car-p4">
+          <div class="proj-carousel" data-count="6" id="car-p4">
           <div class="pc-track" id="trk-p4"><div class="pc-slide"><img src="Tools.png" alt="Analytics 1" loading="lazy"></div><div class="pc-slide"><img src="Tools2.png" alt="Analytics 2" loading="lazy"></div><div class="pc-slide"><img src="Tools3.png" alt="Analytics 3" loading="lazy"></div><div class="pc-slide"><img src="Tools4.png" alt="Analytics 4" loading="lazy"></div><div class="pc-slide"><img src="Tools5.png" alt="Analytics 5" loading="lazy"></div><div class="pc-slide"><img src="Tools6.png" alt="Analytics 6" loading="lazy"></div></div>
           <button class="pc-btn prev" onclick="carMove('p4',-1)" aria-label="Previous">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
@@ -1272,7 +1241,7 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
     <div class="po-drawer">
       <div class="po-drawer-inner">
         <div class="po-vis-panel">
-          <div class="proj-carousel type-campaign" data-count="2" id="car-p5">
+          <div class="proj-carousel" data-count="2" id="car-p5">
           <div class="pc-track" id="trk-p5"><div class="pc-slide"><img src="WA.png" alt="Wahaha 1" loading="lazy"></div><div class="pc-slide"><img src="WA2.png" alt="Wahaha 2" loading="lazy"></div></div>
           <button class="pc-btn prev" onclick="carMove('p5',-1)" aria-label="Previous">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
