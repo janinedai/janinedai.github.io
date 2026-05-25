@@ -81,7 +81,6 @@ body{background:var(--parchment);color:var(--stone);font-family:'DM Sans',sans-s
 #s-hello{background:var(--parchment)}
 #s-background{background:var(--linen)}
 #s-experience{background:var(--sand)}
-#s-life{background:var(--linen)}
 #s-projects{background:var(--parchment)}
 #s-explore{background:var(--linen)}
 #s-contact{background:var(--forest);color:var(--parchment);min-height:auto;padding:5rem 6rem}
@@ -678,106 +677,87 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
   .exp-card{padding:1.75rem 1.5rem}
 }
 
-/* ── LIFE PHOTO GRID ── */
-.lp-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-.lp-col { display: flex; flex-direction: column; gap: 1rem; }
-.lp-slot {
-  position: relative; overflow: hidden;
-  background: var(--mist);
-  border: 1px solid var(--sand);
-  display: flex; align-items: center; justify-content: center;
-  transition: transform .4s cubic-bezier(.22,1,.36,1);
-}
-.lp-slot:hover { transform: scale(1.015); }
-.lp-slot img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.lp-tall  { aspect-ratio: 3/4; }
-.lp-sq    { aspect-ratio: 1; }
-.lp-wide  { height: 220px; }
-.lp-caption {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  padding: .6rem 1rem;
-  background: linear-gradient(to top, rgba(58,78,57,.45), transparent);
-  font-size: .6rem; letter-spacing: .2em; text-transform: uppercase;
-  color: rgba(247,243,236,.8);
-}
-/* placeholder state */
-.lp-ph {
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: .4rem; padding: 1rem;
-}
-.lp-ph-ico { font-size: 2.2rem; opacity: .22; }
-.lp-ph-txt {
-  font-size: .58rem; letter-spacing: .15em; text-transform: uppercase;
-  color: rgba(92,82,72,.38);
-}
-@media (max-width: 640px) {
-  .lp-grid { grid-template-columns: 1fr; }
-  .lp-slot[style*="grid-column"] { grid-column: 1 !important; }
-}
 
-/* ── PROJECT IMAGE GRIDS ── */
-.proj-img-preview {
-  display: grid;
-  gap: 2px;
-  background: var(--sand);
-  overflow: hidden;
-}
-.proj-img-preview.two   { grid-template-columns: 1fr 1fr; height: 220px; }
-.proj-img-preview.three { grid-template-columns: 2fr 1fr; height: 260px; }
-.proj-img-preview.three .pip-tall { grid-row: 1 / 3; }
-.proj-img-preview.solo  { height: 260px; }
-
-.pip-item {
-  overflow: hidden;
+/* ====== PROJECT CAROUSEL ====== */
+.proj-carousel {
   position: relative;
-}
-.pip-item img {
-  width: 100%; height: 100%;
-  object-fit: cover; display: block;
-  transition: transform .5s ease;
-}
-.pip-item:hover img { transform: scale(1.05); }
-
-/* extra images shown in expanded drawer */
-.proj-img-extra {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  padding: 1.5rem 2.5rem 0;
-  background: var(--linen);
-}
-.proj-img-extra .pie-item {
-  aspect-ratio: 4/3;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
   overflow: hidden;
-  border-radius: 3px;
+  background: var(--sand);
+  user-select: none;
 }
-.proj-img-extra .pie-item img {
-  width: 100%; height: 100%;
-  object-fit: cover; display: block;
-  transition: transform .5s ease;
+.pc-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform .45s cubic-bezier(.22,1,.36,1);
 }
-.proj-img-extra .pie-item:hover img { transform: scale(1.06); }
-
-/* ed-main illustration: no border-radius crop, transparent bg friendly */
-.ed-main-illustration {
-  background: transparent;
-  box-shadow: none;
+.pc-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
-.ed-main-illustration img {
-  object-fit: contain;
-  background: transparent;
+.pc-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  pointer-events: none;
 }
-
-@media (max-width: 680px) {
-  .proj-img-preview.three { grid-template-columns: 1fr; height: auto; }
-  .proj-img-preview.three .pip-tall { grid-row: auto; }
-  .proj-img-preview.two   { height: 160px; }
-  .proj-img-extra { grid-template-columns: 1fr 1fr; padding: 1rem 1.5rem 0; }
+/* arrows */
+.pc-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px; height: 36px;
+  background: rgba(247,243,236,.88);
+  border: 1px solid rgba(223,214,197,.6);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: background .25s, opacity .25s;
+  color: var(--forest);
+  padding: 0;
+  font-size: 0;
+  line-height: 0;
+}
+.pc-btn:hover { background: var(--parchment); }
+.pc-btn.prev { left: .85rem; }
+.pc-btn.next { right: .85rem; }
+/* hide arrows if only 1 image */
+.proj-carousel[data-count="1"] .pc-btn { display: none; }
+/* dots */
+.pc-dots {
+  position: absolute;
+  bottom: .75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: .4rem;
+  z-index: 10;
+}
+.pc-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(58,78,57,.25);
+  cursor: pointer;
+  transition: background .25s, transform .25s;
+  border: none; padding: 0;
+}
+.pc-dot.active {
+  background: var(--forest);
+  transform: scale(1.3);
+}
+/* hide dots if only 1 image */
+.proj-carousel[data-count="1"] .pc-dots { display: none; }
+/* make po-vis-panel fill properly */
+.po-vis-panel { padding: 0 !important; }
+@media (max-width: 860px) {
+  .proj-carousel { min-height: 220px; }
 }
 </style>
 </head>
@@ -822,7 +802,6 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
     <li><a href="#s-experience">Experience</a></li>
     <li><a href="#s-projects">Projects</a></li>
     <li><a href="#s-explore">Explore</a></li>
-    <li><a href="#s-life">Life</a></li>
     <li><a href="#s-contact">Contact</a></li>
   </ul>
   <button class="tn-burger" id="burger"><span></span><span></span><span></span></button>
@@ -833,7 +812,6 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
   <a href="#s-experience" onclick="closeMob()">Experience</a>
   <a href="#s-projects"   onclick="closeMob()">Projects</a>
   <a href="#s-explore"    onclick="closeMob()">Explore</a>
-  <a href="#s-life"       onclick="closeMob()">Life</a>
   <a href="#s-contact"    onclick="closeMob()">Contact</a>
 </div>
 
@@ -1040,38 +1018,31 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
 
 <!-- ====== PROJECTS ====== -->
 <section id="s-projects" class="sec" style="padding-left:0;padding-right:0;padding-top:5rem;padding-bottom:5rem;background:var(--parchment);">
-
   <div class="po-section-head">
     <p class="eyebrow">Selected Work</p>
     <h2 class="sec-h" style="margin-bottom:0">Portfolio<br><em>Projects.</em></h2>
   </div>
-
-  <!-- ─── 01 GlowWithin ─── -->
+  <!-- ─── 1 GlowWithin ─── -->
   <div class="po-row reveal" data-proj="p1">
     <button class="po-trigger" onclick="toggleProject('p1')" aria-expanded="false">
       <span class="po-trig-num">01</span>
       <span class="po-trig-name">GlowWithin</span>
       <span class="po-trig-cat">Brand Strategy &nbsp;·&nbsp; Full-Funnel Marketing</span>
-      <span class="po-trig-icon">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-        </svg>
-      </span>
+      <span class="po-trig-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
     </button>
     <div class="po-drawer">
       <div class="po-drawer-inner">
-        <!-- Visual: 3-image preview grid -->
-        <div class="po-vis-panel" style="padding:0;display:block;">
-          <div class="proj-img-preview three">
-            <div class="pip-item pip-tall"><img src="GL3.png" alt="GlowWithin candle range"></div>
-            <div class="pip-item"><img src="GL.jpg" alt="GlowWithin campaign"></div>
-            <div class="pip-item"><img src="GL2.png" alt="GlowWithin social"></div>
-          </div>
-          <!-- extra images shown below in same panel -->
-          <div class="proj-img-extra">
-            <div class="pie-item"><img src="GL4.png" alt="GlowWithin brand"></div>
-            <div class="pie-item"><img src="GL5.jpg" alt="GlowWithin merch"></div>
-          </div>
+        <div class="po-vis-panel">
+          <div class="proj-carousel" data-count="5" id="car-p1">
+          <div class="pc-track" id="trk-p1"><div class="pc-slide"><img src="GL.jpg" alt="GlowWithin 1" loading="lazy"></div><div class="pc-slide"><img src="GL2.png" alt="GlowWithin 2" loading="lazy"></div><div class="pc-slide"><img src="GL3.png" alt="GlowWithin 3" loading="lazy"></div><div class="pc-slide"><img src="GL4.png" alt="GlowWithin 4" loading="lazy"></div><div class="pc-slide"><img src="GL5.jpg" alt="GlowWithin 5" loading="lazy"></div></div>
+          <button class="pc-btn prev" onclick="carMove('p1',-1)" aria-label="Previous">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="pc-btn next" onclick="carMove('p1',1)" aria-label="Next">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <div class="pc-dots" id="dots-p1"><button class="pc-dot active" aria-label="Slide 1"></button><button class="pc-dot" aria-label="Slide 2"></button><button class="pc-dot" aria-label="Slide 3"></button><button class="pc-dot" aria-label="Slide 4"></button><button class="pc-dot" aria-label="Slide 5"></button></div>
+        </div>
         </div>
         <div class="po-content-panel">
           <div class="po-overview-band">
@@ -1081,49 +1052,39 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
           <div class="po-detail-band">
             <div class="po-detail-col">
               <p class="po-drawer-label">My Role</p>
-              <ul class="po-drawer-ul">
-                <li>Defined brand positioning around female empowerment archetypes (Mother, Career Woman, Wife, Trailblazer)</li>
-                <li>Designed product concepts, packaging, and brand storytelling</li>
-                <li>Planned full-funnel strategy across social, paid, email, and influencer channels</li>
-                <li>Built e-commerce journey — website, landing pages, and content strategy</li>
-              </ul>
+              <ul class="po-drawer-ul"><li>Defined brand positioning around female empowerment archetypes (Mother, Career Woman, Wife, Trailblazer)</li><li>Designed product concepts, packaging, and brand storytelling</li><li>Planned full-funnel strategy across social, paid, email, and influencer channels</li><li>Built e-commerce journey — website, landing pages, and content strategy</li></ul>
             </div>
             <div class="po-detail-col">
               <p class="po-drawer-label">Outcome &amp; Insight</p>
               <p class="po-insight">Brand positioning must come before channel strategy — the message determines the medium.</p>
             </div>
-            <div class="po-tags-full">
-              <span class="po-tag">Brand Strategy</span>
-              <span class="po-tag">Full-Funnel</span>
-              <span class="po-tag">Influencer</span>
-              <span class="po-tag">E-Commerce</span>
-              <span class="po-tag">Content</span>
-            </div>
+            <div class="po-tags-full"><span class="po-tag">Brand Strategy</span><span class="po-tag">Full-Funnel</span><span class="po-tag">Influencer</span><span class="po-tag">E-Commerce</span><span class="po-tag">Content</span></div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- ─── 02 Meet Fresh ─── -->
+  <!-- ─── 2 Meet Fresh ─── -->
   <div class="po-row reveal" data-proj="p2">
     <button class="po-trigger" onclick="toggleProject('p2')" aria-expanded="false">
       <span class="po-trig-num">02</span>
       <span class="po-trig-name">Meet Fresh</span>
       <span class="po-trig-cat">Retail Marketing &nbsp;·&nbsp; Customer Experience</span>
-      <span class="po-trig-icon">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-        </svg>
-      </span>
+      <span class="po-trig-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
     </button>
     <div class="po-drawer">
       <div class="po-drawer-inner">
-        <div class="po-vis-panel" style="padding:0;display:block;">
-          <div class="proj-img-preview two">
-            <div class="pip-item"><img src="MF.png" alt="Meet Fresh promotional visual"></div>
-            <div class="pip-item"><img src="MF2.png" alt="Meet Fresh campaign material"></div>
-          </div>
+        <div class="po-vis-panel">
+          <div class="proj-carousel" data-count="2" id="car-p2">
+          <div class="pc-track" id="trk-p2"><div class="pc-slide"><img src="MF.png" alt="Meet Fresh 1" loading="lazy"></div><div class="pc-slide"><img src="MF2.png" alt="Meet Fresh 2" loading="lazy"></div></div>
+          <button class="pc-btn prev" onclick="carMove('p2',-1)" aria-label="Previous">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="pc-btn next" onclick="carMove('p2',1)" aria-label="Next">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <div class="pc-dots" id="dots-p2"><button class="pc-dot active" aria-label="Slide 1"></button><button class="pc-dot" aria-label="Slide 2"></button></div>
+        </div>
         </div>
         <div class="po-content-panel">
           <div class="po-overview-band">
@@ -1133,50 +1094,39 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
           <div class="po-detail-band">
             <div class="po-detail-col">
               <p class="po-drawer-label">My Role</p>
-              <ul class="po-drawer-ul">
-                <li>Designed promotional visuals and assisted with product photography for social media and in-store materials</li>
-                <li>Supported visual merchandising and campaign materials to maintain brand consistency</li>
-                <li>Collected customer feedback and shared insights with management to improve service and marketing effectiveness</li>
-                <li>Worked in a high-volume retail environment, serving 100+ customer groups daily and up to 250–300 during peak periods</li>
-              </ul>
+              <ul class="po-drawer-ul"><li>Designed promotional visuals and assisted with product photography for social media and in-store materials</li><li>Supported visual merchandising and campaign materials to maintain brand consistency</li><li>Collected customer feedback and shared insights with management to improve service and marketing effectiveness</li><li>Worked in a high-volume retail environment, serving 100+ customer groups daily and up to 250–300 during peak periods</li></ul>
             </div>
             <div class="po-detail-col">
               <p class="po-drawer-label">Outcome &amp; Insight</p>
               <p class="po-insight">Strengthened the connection between customer-facing retail operations and marketing execution by turning daily customer interactions into practical brand and service insights.</p>
             </div>
-            <div class="po-tags-full">
-              <span class="po-tag">Retail Marketing</span>
-              <span class="po-tag">Customer Experience</span>
-              <span class="po-tag">Visual Merchandising</span>
-              <span class="po-tag">Social Media Content</span>
-              <span class="po-tag">Canva</span>
-              <span class="po-tag">Brand Consistency</span>
-            </div>
+            <div class="po-tags-full"><span class="po-tag">Retail Marketing</span><span class="po-tag">Customer Experience</span><span class="po-tag">Visual Merchandising</span><span class="po-tag">Social Media Content</span><span class="po-tag">Canva</span><span class="po-tag">Brand Consistency</span></div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- ─── 03 Papa Kids Fashion Show ─── -->
+  <!-- ─── 3 Papa Kids Fashion Show ─── -->
   <div class="po-row reveal" data-proj="p3">
     <button class="po-trigger" onclick="toggleProject('p3')" aria-expanded="false">
       <span class="po-trig-num">03</span>
       <span class="po-trig-name">Papa Kids Fashion Show</span>
       <span class="po-trig-cat">Influencer Marketing &nbsp;·&nbsp; Event</span>
-      <span class="po-trig-icon">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-        </svg>
-      </span>
+      <span class="po-trig-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
     </button>
     <div class="po-drawer">
       <div class="po-drawer-inner">
-        <div class="po-vis-panel" style="padding:0;display:block;">
-          <div class="proj-img-preview two">
-            <div class="pip-item"><img src="Papa.jpg" alt="Papa Kids Fashion Show runway"></div>
-            <div class="pip-item"><img src="Papa2.png" alt="Papa Kids influencer group"></div>
-          </div>
+        <div class="po-vis-panel">
+          <div class="proj-carousel" data-count="2" id="car-p3">
+          <div class="pc-track" id="trk-p3"><div class="pc-slide"><img src="Papa.jpg" alt="Papa Kids Fashion Show 1" loading="lazy"></div><div class="pc-slide"><img src="Papa2.png" alt="Papa Kids Fashion Show 2" loading="lazy"></div></div>
+          <button class="pc-btn prev" onclick="carMove('p3',-1)" aria-label="Previous">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="pc-btn next" onclick="carMove('p3',1)" aria-label="Next">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <div class="pc-dots" id="dots-p3"><button class="pc-dot active" aria-label="Slide 1"></button><button class="pc-dot" aria-label="Slide 2"></button></div>
+        </div>
         </div>
         <div class="po-content-panel">
           <div class="po-overview-band">
@@ -1186,54 +1136,39 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
           <div class="po-detail-band">
             <div class="po-detail-col">
               <p class="po-drawer-label">My Role</p>
-              <ul class="po-drawer-ul">
-                <li>Sourced and selected child influencers based on audience fit and brand alignment</li>
-                <li>Coordinated schedules, budgets, and all stakeholder communications</li>
-                <li>Managed on-site execution including children coordination and parent seating</li>
-                <li>Reviewed and approved influencer-generated content (video &amp; posts) post-event</li>
-              </ul>
+              <ul class="po-drawer-ul"><li>Sourced and selected child influencers based on audience fit and brand alignment</li><li>Coordinated schedules, budgets, and all stakeholder communications</li><li>Managed on-site execution including children coordination and parent seating</li><li>Reviewed and approved influencer-generated content (video &amp; posts) post-event</li></ul>
             </div>
             <div class="po-detail-col">
               <p class="po-drawer-label">Outcome &amp; Insight</p>
               <p class="po-insight">Experiential + influencer creates compounding engagement that digital-only campaigns cannot replicate.</p>
             </div>
-            <div class="po-tags-full">
-              <span class="po-tag">Event Management</span>
-              <span class="po-tag">Influencer Coord.</span>
-              <span class="po-tag">UGC</span>
-              <span class="po-tag">Budget Allocation</span>
-            </div>
+            <div class="po-tags-full"><span class="po-tag">Event Management</span><span class="po-tag">Influencer Coord.</span><span class="po-tag">UGC</span><span class="po-tag">Budget Allocation</span></div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- ─── 04 Data Analytics & Visualisation ─── -->
+  <!-- ─── 4 Data Analytics &amp; Visualisation ─── -->
   <div class="po-row reveal" data-proj="p4">
     <button class="po-trigger" onclick="toggleProject('p4')" aria-expanded="false">
       <span class="po-trig-num">04</span>
       <span class="po-trig-name">Data Analytics &amp; Visualisation</span>
       <span class="po-trig-cat">Python &nbsp;·&nbsp; Tableau &nbsp;·&nbsp; Business Intelligence</span>
-      <span class="po-trig-icon">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-        </svg>
-      </span>
+      <span class="po-trig-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
     </button>
     <div class="po-drawer">
       <div class="po-drawer-inner">
-        <div class="po-vis-panel" style="padding:0;display:block;">
-          <div class="proj-img-preview three">
-            <div class="pip-item pip-tall"><img src="Tools.png" alt="Consumer complaints map"></div>
-            <div class="pip-item"><img src="Tools2.png" alt="School enrollment trend"></div>
-            <div class="pip-item"><img src="Tools3.png" alt="Regression analysis"></div>
-          </div>
-          <div class="proj-img-extra">
-            <div class="pie-item"><img src="Tools4.png" alt="Data visualisation"></div>
-            <div class="pie-item"><img src="Tools5.png" alt="Analytics chart"></div>
-            <div class="pie-item"><img src="Tools6.png" alt="Variables heatmap"></div>
-          </div>
+        <div class="po-vis-panel">
+          <div class="proj-carousel" data-count="6" id="car-p4">
+          <div class="pc-track" id="trk-p4"><div class="pc-slide"><img src="Tools.png" alt="Analytics 1" loading="lazy"></div><div class="pc-slide"><img src="Tools2.png" alt="Analytics 2" loading="lazy"></div><div class="pc-slide"><img src="Tools3.png" alt="Analytics 3" loading="lazy"></div><div class="pc-slide"><img src="Tools4.png" alt="Analytics 4" loading="lazy"></div><div class="pc-slide"><img src="Tools5.png" alt="Analytics 5" loading="lazy"></div><div class="pc-slide"><img src="Tools6.png" alt="Analytics 6" loading="lazy"></div></div>
+          <button class="pc-btn prev" onclick="carMove('p4',-1)" aria-label="Previous">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="pc-btn next" onclick="carMove('p4',1)" aria-label="Next">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <div class="pc-dots" id="dots-p4"><button class="pc-dot active" aria-label="Slide 1"></button><button class="pc-dot" aria-label="Slide 2"></button><button class="pc-dot" aria-label="Slide 3"></button><button class="pc-dot" aria-label="Slide 4"></button><button class="pc-dot" aria-label="Slide 5"></button><button class="pc-dot" aria-label="Slide 6"></button></div>
+        </div>
         </div>
         <div class="po-content-panel">
           <div class="po-overview-band">
@@ -1243,48 +1178,39 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
           <div class="po-detail-band">
             <div class="po-detail-col">
               <p class="po-drawer-label">My Role</p>
-              <ul class="po-drawer-ul">
-                <li>Geographic consumer complaint analysis across US states using Tableau</li>
-                <li>School enrollment forecasting using Linear, Huber, and TheilSen regression models</li>
-                <li>E-commerce variables heatmap for correlation analysis across business metrics</li>
-              </ul>
+              <ul class="po-drawer-ul"><li>Geographic consumer complaint analysis across US states using Tableau</li><li>School enrollment forecasting using Linear, Huber, and TheilSen regression models</li><li>E-commerce variables heatmap for correlation analysis across business metrics</li></ul>
             </div>
             <div class="po-detail-col">
               <p class="po-drawer-label">Outcome &amp; Insight</p>
               <p class="po-insight">Data storytelling is a core marketing skill — the best analysis means nothing without a clear visual narrative.</p>
             </div>
-            <div class="po-tags-full">
-              <span class="po-tag">Python</span>
-              <span class="po-tag">Tableau</span>
-              <span class="po-tag">Regression Analysis</span>
-              <span class="po-tag">BI</span>
-              <span class="po-tag">SQL</span>
-            </div>
+            <div class="po-tags-full"><span class="po-tag">Python</span><span class="po-tag">Tableau</span><span class="po-tag">Regression Analysis</span><span class="po-tag">BI</span><span class="po-tag">SQL</span></div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- ─── 05 Wahaha ─── -->
+  <!-- ─── 5 Wahaha Marketing &amp; Sales Competition ─── -->
   <div class="po-row reveal" data-proj="p5">
     <button class="po-trigger" onclick="toggleProject('p5')" aria-expanded="false">
       <span class="po-trig-num">05</span>
       <span class="po-trig-name">Wahaha Marketing &amp; Sales Competition</span>
       <span class="po-trig-cat">Brand Repositioning &nbsp;·&nbsp; Sales Activation</span>
-      <span class="po-trig-icon">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-        </svg>
-      </span>
+      <span class="po-trig-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
     </button>
     <div class="po-drawer">
       <div class="po-drawer-inner">
-        <div class="po-vis-panel" style="padding:0;display:block;">
-          <div class="proj-img-preview two">
-            <div class="pip-item"><img src="WA.png" alt="Wahaha brand redesign"></div>
-            <div class="pip-item"><img src="WA2.png" alt="Wahaha product packaging"></div>
-          </div>
+        <div class="po-vis-panel">
+          <div class="proj-carousel" data-count="2" id="car-p5">
+          <div class="pc-track" id="trk-p5"><div class="pc-slide"><img src="WA.png" alt="Wahaha 1" loading="lazy"></div><div class="pc-slide"><img src="WA2.png" alt="Wahaha 2" loading="lazy"></div></div>
+          <button class="pc-btn prev" onclick="carMove('p5',-1)" aria-label="Previous">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="pc-btn next" onclick="carMove('p5',1)" aria-label="Next">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <div class="pc-dots" id="dots-p5"><button class="pc-dot active" aria-label="Slide 1"></button><button class="pc-dot" aria-label="Slide 2"></button></div>
+        </div>
         </div>
         <div class="po-content-panel">
           <div class="po-overview-band">
@@ -1294,23 +1220,13 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
           <div class="po-detail-band">
             <div class="po-detail-col">
               <p class="po-drawer-label">My Role</p>
-              <ul class="po-drawer-ul">
-                <li>Developed "morning ritual" brand repositioning concept and product story</li>
-                <li>Designed limited-edition merchandise and refreshed visual identity</li>
-                <li>Executed integrated campaigns — direct, community (WeChat), and promotions</li>
-                <li>Managed multi-location sales activations and on-ground execution</li>
-              </ul>
+              <ul class="po-drawer-ul"><li>Developed "morning ritual" brand repositioning concept and product story</li><li>Designed limited-edition merchandise and refreshed visual identity</li><li>Executed integrated campaigns — direct, community (WeChat), and promotions</li><li>Managed multi-location sales activations and on-ground execution</li></ul>
             </div>
             <div class="po-detail-col">
               <p class="po-drawer-label">Outcome &amp; Insight</p>
               <p class="po-insight">Heritage brands need a bridge narrative — honouring the past while clearly signalling evolution.</p>
             </div>
-            <div class="po-tags-full">
-              <span class="po-tag">Brand Positioning</span>
-              <span class="po-tag">Integrated Campaigns</span>
-              <span class="po-tag">Sales Activation</span>
-              <span class="po-tag">Merchandise Design</span>
-            </div>
+            <div class="po-tags-full"><span class="po-tag">Brand Positioning</span><span class="po-tag">Integrated Campaigns</span><span class="po-tag">Sales Activation</span><span class="po-tag">Merchandise Design</span></div>
           </div>
         </div>
       </div>
@@ -1355,34 +1271,6 @@ footer{background:#1c2a1c;color:rgba(200,211,192,.28);text-align:center;padding:
   </div>
 </section>
 
-<!-- ====== LIFE ====== -->
-<section id="s-life" class="sec">
-  <p class="eyebrow">Life</p>
-  <h2 class="sec-h" style="margin-bottom:2.5rem">Beyond<br><em>work.</em></h2>
-
-  <!-- Photo grid -->
-  <div class="lp-grid">
-
-    <!-- Slot 1: tall left — Me -->
-    <div class="lp-slot lp-tall reveal">
-      <img src="Me.JPG" alt="Janine Dai">
-      <div class="lp-caption">Sydney life</div>
-    </div>
-
-    <!-- Right column: two stacked -->
-    <div class="lp-col">
-      <div class="lp-slot lp-sq reveal">
-        <img src="Cat.JPG" alt="My cat">
-        <div class="lp-caption">My world</div>
-      </div>
-      <div class="lp-slot lp-sq reveal">
-        <img src="Dog.PNG" alt="My dog">
-        <div class="lp-caption">Slow living</div>
-      </div>
-    </div>
-
-  </div>
-</section>
 
 <!-- ====== CONTACT ====== -->
 <section id="s-contact" class="sec">
@@ -1527,6 +1415,73 @@ function toggleProject(id){
     setTimeout(() => row.scrollIntoView({behavior:'smooth', block:'nearest'}), 80);
   }
 }
+
+// ── CAROUSEL ──────────────────────────────────────────
+(function(){
+  const state = {}; // pid -> { idx, images }
+
+  function init(pid){
+    if(state[pid]) return;
+    const car   = document.getElementById('car-'+pid);
+    if(!car) return;
+    const slides = car.querySelectorAll('.pc-slide');
+    state[pid] = { idx: 0, total: slides.length };
+    // touch/swipe
+    let startX = 0;
+    car.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, {passive:true});
+    car.addEventListener('touchend',   e => {
+      const dx = e.changedTouches[0].clientX - startX;
+      if(Math.abs(dx) > 40) move(pid, dx < 0 ? 1 : -1);
+    }, {passive:true});
+  }
+
+  function move(pid, dir){
+    init(pid);
+    const s = state[pid];
+    s.idx = (s.idx + dir + s.total) % s.total;
+    render(pid);
+  }
+
+  function goTo(pid, idx){
+    init(pid);
+    state[pid].idx = idx;
+    render(pid);
+  }
+
+  function render(pid){
+    const s   = state[pid];
+    const trk = document.getElementById('trk-'+pid);
+    if(trk) trk.style.transform = `translateX(-${s.idx * 100}%)`;
+    const dots = document.querySelectorAll('#dots-'+pid+' .pc-dot');
+    dots.forEach((d,i) => d.classList.toggle('active', i === s.idx));
+  }
+
+  // expose globally
+  window.carMove = function(pid, dir){ init(pid); move(pid, dir); };
+  window.carGoTo = function(pid, idx){ goTo(pid, idx); };
+
+  // init dots click handlers once carousel opens
+  document.addEventListener('click', function(e){
+    const dot = e.target.closest('.pc-dot');
+    if(!dot) return;
+    const dotsEl = dot.closest('.pc-dots');
+    if(!dotsEl) return;
+    const pid = dotsEl.id.replace('dots-','');
+    const idx = Array.from(dotsEl.children).indexOf(dot);
+    goTo(pid, idx);
+  });
+
+  // auto-init carousels that are inside open rows
+  const ob = new MutationObserver(muts => {
+    muts.forEach(mu => {
+      if(mu.target.classList && mu.target.classList.contains('po-row') && mu.target.classList.contains('open')){
+        const car = mu.target.querySelector('.proj-carousel');
+        if(car) init(car.id.replace('car-',''));
+      }
+    });
+  });
+  document.querySelectorAll('.po-row').forEach(row => ob.observe(row, {attributes:true, attributeFilter:['class']}));
+})();
 </script>
 </body>
 </html>
